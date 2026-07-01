@@ -42,6 +42,23 @@
         font-weight: 750;
       }
 
+      .back-button {
+        width: 28px;
+        height: 28px;
+        min-height: 28px;
+        padding: 0;
+        margin: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .back-button:hover {
+        background: var(--soft);
+        color: var(--text);
+      }
+
       .icon {
         width: 22px;
         height: 22px;
@@ -317,11 +334,30 @@
         margin: 14px -14px -14px;
         padding: 10px 14px;
       }
+
+      .log-panel {
+        max-height: 118px;
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #111827;
+        color: #dbeafe;
+        padding: 8px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 10px;
+        line-height: 1.45;
+      }
+
+      .log-line {
+        margin-bottom: 3px;
+        overflow-wrap: anywhere;
+      }
     </style>
   </head>
 
   <body>
     <div class="header">
+      <button class="back-button" id="backButton">←</button>
       <div class="icon">⌕</div>
       <div>DesignTrace</div>
     </div>
@@ -381,11 +417,70 @@
 
       let selectedLayer = null;
       let activeMatch = null;
+      let currentScreen = "empty";
+      let logs = [];
+
+      function navigate(screenName, renderFunction) {
+        currentScreen = screenName;
+        renderFunction();
+        updateBackButton();
+      }
+
+      function updateBackButton() {
+        const backButton = document.getElementById("backButton");
+        if (!backButton) return;
+        backButton.style.visibility = currentScreen === "empty" ? "hidden" : "visible";
+      }
+
+      function goBack() {
+        if (currentScreen === "selected") {
+          navigate("empty", renderEmpty);
+          return;
+        }
+
+        if (currentScreen === "scanning" || currentScreen === "results") {
+          navigate("selected", renderSelected);
+          return;
+        }
+
+        if (currentScreen === "detail") {
+          navigate("results", renderResults);
+          return;
+        }
+
+        if (
+          currentScreen === "taken-there" ||
+          currentScreen === "flagged" ||
+          currentScreen === "reviewed"
+        ) {
+          navigate("detail", renderMatchDetail);
+          return;
+        }
+
+        navigate("empty", renderEmpty);
+      }
 
       function confidenceClass(score) {
         if (score >= 80) return "high";
         if (score >= 50) return "medium";
         return "low";
+      }
+
+      function addLog(message) {
+        logs.push(message);
+        if (logs.length > 40) logs = logs.slice(-40);
+        renderLogs();
+      }
+
+      function renderLogs() {
+        const logPanel = document.getElementById("scanLog");
+        if (!logPanel) return;
+        logPanel.innerHTML = logs.map((line) => `<div class="log-line">› ${line}</div>`).join("");
+        logPanel.scrollTop = logPanel.scrollHeight;
+      }
+
+      function logPanelHtml() {
+        return `<div class="log-panel" id="scanLog">${logs.map((line) => `<div class="log-line">› ${line}</div>`).join("")}</div>`;
       }
 
       function renderEmpty() {
@@ -410,7 +505,7 @@
 
         document.getElementById("useSample").onclick = () => {
           selectedLayer = sampleLayer;
-          renderSelected();
+          navigate("selected", renderSelected);
         };
       }
 
@@ -455,8 +550,12 @@
           </div>
         `;
 
-        document.getElementById("scanFile").onclick = renderScanning;
-        document.getElementById("changeSelection").onclick = renderEmpty;
+        document.getElementById("scanFile").onclick = () => {
+            logs = ["Starting scan..."];
+            navigate("scanning", renderScanning);
+            parent.postMessage({ pluginMessage: { type: "scan-file" } }, "*");
+        };
+        document.getElementById("changeSelection").onclick = () => navigate("empty", renderEmpty);
       }
 
       function renderScanning() {
@@ -468,21 +567,42 @@
               <div class="step"><span class="dot">✓</span> Reading selected layer</div>
               <div class="step"><span class="dot">✓</span> Comparing structure</div>
               <div class="step"><span class="dot">•</span> Ranking matches</div>
+              ${logPanelHtml()}
             </div>
             <button class="primary" disabled>Scanning…</button>
           </div>
         `;
 
-        setTimeout(renderResults, 900);
       }
 
       function renderResults() {
+        if (matches.length === 0) {
+          app.innerHTML = `
+            <div class="empty">
+              <div class="empty-inner">
+                <div class="empty-icon">⌕</div>
+                <div class="stack">
+                  <h1>No matches found</h1>
+                  <p>Try selecting a larger frame. We’ll tune the matching logic next.</p>
+                </div>
+                <button class="primary" id="backToSelected">Back to selected layer</button>
+              </div>
+            </div>
+          `;
+
+          document.getElementById("backToSelected").onclick = () => {
+            navigate("selected", renderSelected);
+          };
+
+          return;
+        }
+
         app.innerHTML = `
           <div class="summary">
             <div class="row between">
               <div>
-                <h1>14 matches found</h1>
-                <p>4 high confidence, 7 medium, 3 low</p>
+                <h1>${matches.length} matches found</h1>
+                <p>${matches.filter((match) => match.score >= 80).length} high confidence, ${matches.filter((match) => match.score >= 50 && match.score < 80).length} medium, ${matches.filter((match) => match.score < 50).length} low</p>
               </div>
               <button class="ghost" id="exportReport">Export</button>
             </div>
@@ -509,7 +629,7 @@
         document.querySelectorAll(".match-row").forEach((row) => {
           row.onclick = () => {
             activeMatch = matches[Number(row.dataset.index)];
-            renderMatchDetail();
+            navigate("detail", renderMatchDetail);
           };
         });
 
@@ -567,10 +687,26 @@
           </div>
         `;
 
-        document.getElementById("backToResults").onclick = renderResults;
-        document.getElementById("takeMeThere").onclick = renderTakenThere;
-        document.getElementById("flag").onclick = renderFlagged;
-        document.getElementById("reviewed").onclick = renderReviewed;
+        document.getElementById("backToResults").onclick = () => navigate("results", renderResults);
+        document.getElementById("takeMeThere").onclick = () => {
+          parent.postMessage({
+            pluginMessage: {
+              type: "take-me-there",
+              match: activeMatch
+            }
+          }, "*");
+        };
+        document.getElementById("flag").onclick = () => {
+          parent.postMessage({
+            pluginMessage: {
+              type: "flag-match",
+              match: activeMatch
+            }
+          }, "*");
+        };
+        document.getElementById("reviewed").onclick = () => {
+          navigate("reviewed", renderReviewed);
+        };
       }
 
       function renderTakenThere() {
@@ -586,7 +722,7 @@
             </div>
           </div>
         `;
-        document.getElementById("back").onclick = renderResults;
+        document.getElementById("back").onclick = () => navigate("results", renderResults);
       }
 
       function renderFlagged() {
@@ -603,20 +739,20 @@
             </div>
           </div>
         `;
-        document.getElementById("continue").onclick = renderResults;
-        document.getElementById("back").onclick = renderResults;
+        document.getElementById("continue").onclick = () => navigate("results", renderResults);
+        document.getElementById("back").onclick = () => navigate("results", renderResults);
       }
 
       function renderReviewed() {
         activeMatch.reviewed = true;
-        renderResults();
+        navigate("results", renderResults);
       }
 
       window.onmessage = (event) => {
         const message = event.data.pluginMessage;
 
         if (message.type === "no-selection") {
-          renderEmpty();
+          navigate("empty", renderEmpty);
           alert("Select a layer in Figma first.");
         }
 
@@ -625,11 +761,36 @@
             ...message.layer,
             layers: message.layer.layers || "?"
           };
-          renderSelected();
+          navigate("selected", renderSelected);
+        }
+
+        if (message.type === "scan-started") {
+            navigate("scanning", renderScanning);
+        }
+
+        if (message.type === "scan-log") {
+          addLog(message.message);
+        }
+
+        if (message.type === "scan-results") {
+            matches.length = 0;
+            message.matches.forEach((match) => matches.push(match));
+            navigate("results", renderResults);
+        }
+
+        if (message.type === "taken-there") {
+          activeMatch = message.match;
+          navigate("taken-there", renderTakenThere);
+        }
+
+        if (message.type === "flagged") {
+          activeMatch = message.match;
+          navigate("flagged", renderFlagged);
         }
       };
 
-      renderEmpty();
+      document.getElementById("backButton").onclick = goBack;
+      navigate("empty", renderEmpty);
     </script>
   </body>
 </html>
