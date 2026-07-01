@@ -1,0 +1,8 @@
+{
+  "name": "DesignTrace",
+  "id": "designtrace-local",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"]
+}

@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        margin: 0;
+        font-family: Inter, Arial, sans-serif;
+        background: #f6f7fb;
+        color: #171a2f;
+      }
+
+      .header {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 16px;
+        background: #ffffff;
+        border-bottom: 1px solid #e4e7ef;
+        font-weight: 700;
+      }
+
+      .icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        background: #3563e9;
+        color: white;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .card {
+        background: #ffffff;
+        border: 1px solid #e4e7ef;
+        border-radius: 8px;
+        padding: 14px;
+      }
+
+      .eyebrow {
+        font-size: 11px;
+        font-weight: 700;
+        color: #7b849b;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 8px;
+      }
+
+      h1 {
+        font-size: 16px;
+        line-height: 1.3;
+        margin: 0 0 6px;
+      }
+
+      p {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #7b849b;
+      }
+
+      .meta {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .chip {
+        font-size: 11px;
+        color: #586177;
+        background: #f3f5fa;
+        border: 1px solid #e4e7ef;
+        border-radius: 6px;
+        padding: 4px 7px;
+      }
+
+      button {
+        width: 100%;
+        height: 36px;
+        border: 0;
+        border-radius: 7px;
+        margin-top: 14px;
+        background: #3563e9;
+        color: white;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      button.secondary {
+        background: transparent;
+        color: #7b849b;
+      }
+
+      .empty {
+        text-align: center;
+        padding: 28px 14px;
+      }
+
+      .empty-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        background: #eef2ff;
+        color: #3563e9;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 14px;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="icon">⌕</div>
+      <div>DesignTrace</div>
+    </div>
+
+    <div class="content">
+      <div id="app" class="card empty">
+        <div class="empty-icon">⌕</div>
+        <h1>Find matching designs</h1>
+        <p>Select a layer in Figma, then check if DesignTrace can read it.</p>
+        <button id="checkSelection">Check selected layer</button>
+      </div>
+    </div>
+
+    <script>
+      const app = document.getElementById("app");
+
+      document.getElementById("checkSelection").onclick = () => {
+        parent.postMessage(
+          { pluginMessage: { type: "check-selection" } },
+          "*"
+        );
+      };
+
+      window.onmessage = (event) => {
+        const message = event.data.pluginMessage;
+
+        if (message.type === "no-selection") {
+          app.className = "card empty";
+          app.innerHTML = `
+            <div class="empty-icon">!</div>
+            <h1>No layer selected</h1>
+            <p>Select a frame, component, instance, group, or rectangle in Figma first.</p>
+            <button id="tryAgain">Try again</button>
+          `;
+
+          document.getElementById("tryAgain").onclick = () => {
+            parent.postMessage(
+              { pluginMessage: { type: "check-selection" } },
+              "*"
+            );
+          };
+        }
+
+        if (message.type === "selection-found") {
+          const layer = message.layer;
+
+          app.className = "card";
+          app.innerHTML = `
+            <div class="eyebrow">Selected layer</div>
+            <h1>${layer.name}</h1>
+            <p>${layer.pageName}</p>
+
+            <div class="meta">
+              <span class="chip">${layer.type}</span>
+              <span class="chip">${layer.width} × ${layer.height}</span>
+            </div>
+
+            <button id="nextStep">Scan file</button>
+            <button class="secondary" id="changeSelection">Change selection</button>
+          `;
+
+          document.getElementById("changeSelection").onclick = () => {
+            parent.postMessage(
+              { pluginMessage: { type: "check-selection" } },
+              "*"
+            );
+          };
+
+          document.getElementById("nextStep").onclick = () => {
+            alert("Nice. Selection works. Next step: we will build the scan.");
+          };
+        }
+      };
+    </script>
+  </body>
+</html>
