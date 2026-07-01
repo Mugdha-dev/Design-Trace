@@ -3,11 +3,32 @@
   <head>
     <meta charset="utf-8" />
     <style>
+      :root {
+        --bg: #f6f7fb;
+        --surface: #ffffff;
+        --line: #e4e7ef;
+        --text: #171a2f;
+        --muted: #7b849b;
+        --soft: #f3f5fa;
+        --blue: #3563e9;
+        --blue-soft: #eef3ff;
+        --green: #0f9f55;
+        --green-soft: #eaf8f0;
+        --amber: #d97706;
+        --amber-soft: #fff6df;
+        --gray: #697386;
+        --gray-soft: #f0f2f6;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
         font-family: Inter, Arial, sans-serif;
-        background: #f6f7fb;
-        color: #171a2f;
+        background: var(--bg);
+        color: var(--text);
       }
 
       .header {
@@ -15,105 +36,286 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 0 16px;
-        background: #ffffff;
-        border-bottom: 1px solid #e4e7ef;
-        font-weight: 700;
+        padding: 0 14px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+        font-weight: 750;
       }
 
       .icon {
-        width: 20px;
-        height: 20px;
-        border-radius: 5px;
-        background: #3563e9;
-        color: white;
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        background: var(--blue);
+        color: #fff;
         display: grid;
         place-items: center;
-        font-size: 12px;
+        font-size: 13px;
       }
 
       .content {
-        padding: 16px;
-      }
-
-      .card {
-        background: #ffffff;
-        border: 1px solid #e4e7ef;
-        border-radius: 8px;
         padding: 14px;
       }
 
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .stack {
+        display: grid;
+        gap: 10px;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .between {
+        justify-content: space-between;
+      }
+
       .eyebrow {
-        font-size: 11px;
-        font-weight: 700;
-        color: #7b849b;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
-        margin-bottom: 8px;
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
       }
 
       h1 {
         font-size: 16px;
-        line-height: 1.3;
-        margin: 0 0 6px;
+        line-height: 1.25;
+      }
+
+      h2 {
+        font-size: 14px;
+        line-height: 1.25;
       }
 
       p {
-        margin: 0;
+        color: var(--muted);
         font-size: 12px;
-        line-height: 1.5;
-        color: #7b849b;
-      }
-
-      .meta {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-        margin-top: 12px;
-      }
-
-      .chip {
-        font-size: 11px;
-        color: #586177;
-        background: #f3f5fa;
-        border: 1px solid #e4e7ef;
-        border-radius: 6px;
-        padding: 4px 7px;
+        line-height: 1.45;
       }
 
       button {
-        width: 100%;
-        height: 36px;
         border: 0;
         border-radius: 7px;
-        margin-top: 14px;
-        background: #3563e9;
-        color: white;
-        font-size: 13px;
-        font-weight: 700;
         cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 750;
+        min-height: 34px;
+        padding: 0 10px;
       }
 
-      button.secondary {
+      .primary {
+        width: 100%;
+        background: var(--blue);
+        color: #fff;
+      }
+
+      .secondary {
+        width: 100%;
         background: transparent;
-        color: #7b849b;
+        color: var(--muted);
+      }
+
+      .ghost {
+        background: var(--soft);
+        color: var(--text);
+      }
+
+      .thumb {
+        width: 58px;
+        height: 42px;
+        flex: 0 0 auto;
+        border: 1px solid #dfe5ff;
+        border-radius: 6px;
+        background:
+          linear-gradient(90deg, #cfd9ff 0 34%, transparent 34%),
+          linear-gradient(90deg, #dce4ff 0 76%, transparent 76%),
+          linear-gradient(90deg, #dce4ff 0 58%, transparent 58%),
+          linear-gradient(90deg, #3563e9 0 32%, transparent 32%),
+          #f1f4ff;
+        background-size: 38px 5px, 44px 5px, 34px 5px, 22px 8px, auto;
+        background-position: 8px 8px, 8px 18px, 8px 27px, 8px 34px, 0 0;
+        background-repeat: no-repeat;
+      }
+
+      .chip,
+      .tag {
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        min-height: 22px;
+        padding: 0 7px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .chip {
+        background: var(--soft);
+        color: var(--gray);
+        border: 1px solid var(--line);
+      }
+
+      .tag {
+        background: var(--blue-soft);
+        color: var(--blue);
+      }
+
+      .score {
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 800;
+        min-width: 44px;
+        padding: 5px 7px;
+        text-align: center;
+      }
+
+      .high {
+        background: var(--green-soft);
+        color: var(--green);
+        border: 1px solid #a8edc4;
+      }
+
+      .medium {
+        background: var(--amber-soft);
+        color: var(--amber);
+        border: 1px solid #ffd76a;
+      }
+
+      .low {
+        background: var(--gray-soft);
+        color: var(--gray);
+        border: 1px solid var(--line);
+      }
+
+      .match-row {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 9px;
+        text-align: left;
+      }
+
+      .match-row:hover {
+        border-color: #bcc9ff;
+        background: #fbfcff;
+      }
+
+      .match-copy {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .match-copy h2 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .tags {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 7px;
+      }
+
+      .summary {
+        border-bottom: 1px solid var(--line);
+        margin: -14px -14px 12px;
+        padding: 14px;
+        background: var(--surface);
       }
 
       .empty {
+        min-height: 420px;
+        display: grid;
+        place-items: center;
         text-align: center;
-        padding: 28px 14px;
+      }
+
+      .empty-inner {
+        display: grid;
+        gap: 12px;
+        width: 100%;
       }
 
       .empty-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 8px;
-        background: #eef2ff;
-        color: #3563e9;
+        width: 46px;
+        height: 46px;
+        border-radius: 10px;
+        background: var(--blue-soft);
+        color: var(--blue);
         display: grid;
         place-items: center;
-        margin: 0 auto 14px;
-        font-size: 20px;
+        margin: 0 auto;
+        font-size: 22px;
+      }
+
+      .settings {
+        border-top: 1px solid var(--line);
+        margin-top: 10px;
+        padding-top: 10px;
+      }
+
+      .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      label {
+        align-items: center;
+        display: flex;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 650;
+      }
+
+      .step {
+        align-items: center;
+        display: flex;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+        background: var(--blue-soft);
+        color: var(--blue);
+        display: grid;
+        place-items: center;
+        font-size: 10px;
+        font-weight: 900;
+      }
+
+      .footer-note {
+        border-top: 1px solid var(--line);
+        bottom: 0;
+        color: #a5adbf;
+        font-size: 11px;
+        margin: 14px -14px -14px;
+        padding: 10px 14px;
       }
     </style>
   </head>
@@ -124,75 +326,310 @@
       <div>DesignTrace</div>
     </div>
 
-    <div class="content">
-      <div id="app" class="card empty">
-        <div class="empty-icon">⌕</div>
-        <h1>Find matching designs</h1>
-        <p>Select a layer in Figma, then check if DesignTrace can read it.</p>
-        <button id="checkSelection">Check selected layer</button>
-      </div>
-    </div>
+    <div id="app" class="content"></div>
 
     <script>
       const app = document.getElementById("app");
 
-      document.getElementById("checkSelection").onclick = () => {
-        parent.postMessage(
-          { pluginMessage: { type: "check-selection" } },
-          "*"
-        );
+      const sampleLayer = {
+        name: "Frame 929232",
+        pageName: "Checkout Flow",
+        type: "FRAME",
+        width: 520,
+        height: 380,
+        layers: 12
       };
+
+      const matches = [
+        {
+          name: "Product Card - Hero",
+          page: "DEV Ready / Homepage",
+          score: 94,
+          reasons: ["Same component", "Similar text"]
+        },
+        {
+          name: "CTA Section / Primary",
+          page: "Checkout Flow",
+          score: 88,
+          reasons: ["Layer structure", "Similar text"]
+        },
+        {
+          name: "Modal - Confirm",
+          page: "QA States",
+          score: 82,
+          reasons: ["Same component"]
+        },
+        {
+          name: "Frame 929232 - Copy",
+          page: "Archive",
+          score: 77,
+          reasons: ["Similar structure"]
+        },
+        {
+          name: "Card Grid Item",
+          page: "DEV Ready / Cards",
+          score: 68,
+          reasons: ["Similar text"]
+        },
+        {
+          name: "Tooltip Trigger",
+          page: "Old Explorations",
+          score: 28,
+          reasons: ["Frame names"]
+        }
+      ];
+
+      let selectedLayer = null;
+      let activeMatch = null;
+
+      function confidenceClass(score) {
+        if (score >= 80) return "high";
+        if (score >= 50) return "medium";
+        return "low";
+      }
+
+      function renderEmpty() {
+        app.innerHTML = `
+          <div class="empty">
+            <div class="empty-inner">
+              <div class="empty-icon">⌕</div>
+              <div class="stack">
+                <h1>Find matching designs</h1>
+                <p>Select a layer to trace where it appears in this file.</p>
+              </div>
+              <button class="primary" id="checkSelection">Check selected layer</button>
+              <button class="ghost" id="useSample">Use sample selection</button>
+              <div class="footer-note">Current Figma file only</div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById("checkSelection").onclick = () => {
+          parent.postMessage({ pluginMessage: { type: "check-selection" } }, "*");
+        };
+
+        document.getElementById("useSample").onclick = () => {
+          selectedLayer = sampleLayer;
+          renderSelected();
+        };
+      }
+
+      function selectedCard() {
+        return `
+          <div class="card">
+            <div class="row">
+              <div class="thumb"></div>
+              <div class="stack" style="gap: 5px; min-width: 0;">
+                <div class="eyebrow">Selected layer</div>
+                <h1>${selectedLayer.name}</h1>
+                <p>${selectedLayer.pageName}</p>
+                <div class="row" style="gap: 6px; flex-wrap: wrap;">
+                  <span class="chip">${selectedLayer.type}</span>
+                  <span class="chip">${selectedLayer.width} × ${selectedLayer.height}</span>
+                  <span class="chip">${selectedLayer.layers || "?"} layers</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderSelected() {
+        app.innerHTML = `
+          <div class="stack">
+            ${selectedCard()}
+            <div class="card settings">
+              <div class="row between">
+                <h2>Scan settings</h2>
+                <p>Current file</p>
+              </div>
+              <div class="settings-grid">
+                <label><input type="checkbox" checked /> Components</label>
+                <label><input type="checkbox" checked /> Text</label>
+                <label><input type="checkbox" checked /> Structure</label>
+                <label><input type="checkbox" /> Frame names</label>
+              </div>
+            </div>
+            <button class="primary" id="scanFile">Scan file</button>
+            <button class="secondary" id="changeSelection">Change selection</button>
+          </div>
+        `;
+
+        document.getElementById("scanFile").onclick = renderScanning;
+        document.getElementById("changeSelection").onclick = renderEmpty;
+      }
+
+      function renderScanning() {
+        app.innerHTML = `
+          <div class="stack">
+            ${selectedCard()}
+            <div class="card stack">
+              <h1>Scanning all pages…</h1>
+              <div class="step"><span class="dot">✓</span> Reading selected layer</div>
+              <div class="step"><span class="dot">✓</span> Comparing structure</div>
+              <div class="step"><span class="dot">•</span> Ranking matches</div>
+            </div>
+            <button class="primary" disabled>Scanning…</button>
+          </div>
+        `;
+
+        setTimeout(renderResults, 900);
+      }
+
+      function renderResults() {
+        app.innerHTML = `
+          <div class="summary">
+            <div class="row between">
+              <div>
+                <h1>14 matches found</h1>
+                <p>4 high confidence, 7 medium, 3 low</p>
+              </div>
+              <button class="ghost" id="exportReport">Export</button>
+            </div>
+          </div>
+          <div class="stack">
+            ${matches.map((match, index) => `
+              <button class="match-row" data-index="${index}">
+                <div class="row">
+                  <div class="thumb"></div>
+                  <div class="match-copy">
+                    <h2>${match.name}</h2>
+                    <p>${match.page}</p>
+                    <div class="tags">
+                      ${match.reasons.slice(0, 2).map((reason) => `<span class="tag">${reason}</span>`).join("")}
+                    </div>
+                  </div>
+                  <span class="score ${confidenceClass(match.score)}">${match.score}%</span>
+                </div>
+              </button>
+            `).join("")}
+          </div>
+        `;
+
+        document.querySelectorAll(".match-row").forEach((row) => {
+          row.onclick = () => {
+            activeMatch = matches[Number(row.dataset.index)];
+            renderMatchDetail();
+          };
+        });
+
+        document.getElementById("exportReport").onclick = () => {
+          alert("Report export will be added later.");
+        };
+      }
+
+      function renderMatchDetail() {
+        app.innerHTML = `
+          <div class="stack">
+            <button class="secondary" id="backToResults">← Results</button>
+
+            <div class="card stack">
+              <div class="row between">
+                <div>
+                  <h1>${activeMatch.name}</h1>
+                  <p>${activeMatch.page}</p>
+                </div>
+                <span class="score ${confidenceClass(activeMatch.score)}">${activeMatch.score}%</span>
+              </div>
+            </div>
+
+            <div class="card stack">
+              <div class="eyebrow">Source</div>
+              <div class="row">
+                <div class="thumb"></div>
+                <div>
+                  <h2>${selectedLayer.name}</h2>
+                  <p>${selectedLayer.pageName}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card stack">
+              <div class="eyebrow">Matched</div>
+              <div class="row">
+                <div class="thumb"></div>
+                <div>
+                  <h2>${activeMatch.name}</h2>
+                  <p>${activeMatch.page}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card stack">
+              <h2>Why this matched</h2>
+              ${activeMatch.reasons.map((reason) => `<div class="step"><span class="dot">✓</span>${reason}</div>`).join("")}
+              <p>Review this match if the source design changed.</p>
+            </div>
+
+            <button class="primary" id="takeMeThere">Take me there</button>
+            <button class="ghost" id="flag">Flag as outdated</button>
+            <button class="secondary" id="reviewed">Mark reviewed</button>
+          </div>
+        `;
+
+        document.getElementById("backToResults").onclick = renderResults;
+        document.getElementById("takeMeThere").onclick = renderTakenThere;
+        document.getElementById("flag").onclick = renderFlagged;
+        document.getElementById("reviewed").onclick = renderReviewed;
+      }
+
+      function renderTakenThere() {
+        app.innerHTML = `
+          <div class="empty">
+            <div class="empty-inner">
+              <div class="empty-icon">✓</div>
+              <div class="stack">
+                <h1>Frame selected</h1>
+                <p>${activeMatch.name} is now selected on the canvas.</p>
+              </div>
+              <button class="primary" id="back">Back to results</button>
+            </div>
+          </div>
+        `;
+        document.getElementById("back").onclick = renderResults;
+      }
+
+      function renderFlagged() {
+        app.innerHTML = `
+          <div class="empty">
+            <div class="empty-inner">
+              <div class="empty-icon">⚑</div>
+              <div class="stack">
+                <h1>Review flag added</h1>
+                <p>${activeMatch.name} was marked as outdated.</p>
+              </div>
+              <button class="primary" id="continue">Continue reviewing</button>
+              <button class="ghost" id="back">Back to results</button>
+            </div>
+          </div>
+        `;
+        document.getElementById("continue").onclick = renderResults;
+        document.getElementById("back").onclick = renderResults;
+      }
+
+      function renderReviewed() {
+        activeMatch.reviewed = true;
+        renderResults();
+      }
 
       window.onmessage = (event) => {
         const message = event.data.pluginMessage;
 
         if (message.type === "no-selection") {
-          app.className = "card empty";
-          app.innerHTML = `
-            <div class="empty-icon">!</div>
-            <h1>No layer selected</h1>
-            <p>Select a frame, component, instance, group, or rectangle in Figma first.</p>
-            <button id="tryAgain">Try again</button>
-          `;
-
-          document.getElementById("tryAgain").onclick = () => {
-            parent.postMessage(
-              { pluginMessage: { type: "check-selection" } },
-              "*"
-            );
-          };
+          renderEmpty();
+          alert("Select a layer in Figma first.");
         }
 
         if (message.type === "selection-found") {
-          const layer = message.layer;
-
-          app.className = "card";
-          app.innerHTML = `
-            <div class="eyebrow">Selected layer</div>
-            <h1>${layer.name}</h1>
-            <p>${layer.pageName}</p>
-
-            <div class="meta">
-              <span class="chip">${layer.type}</span>
-              <span class="chip">${layer.width} × ${layer.height}</span>
-            </div>
-
-            <button id="nextStep">Scan file</button>
-            <button class="secondary" id="changeSelection">Change selection</button>
-          `;
-
-          document.getElementById("changeSelection").onclick = () => {
-            parent.postMessage(
-              { pluginMessage: { type: "check-selection" } },
-              "*"
-            );
+          selectedLayer = {
+            ...message.layer,
+            layers: message.layer.layers || "?"
           };
-
-          document.getElementById("nextStep").onclick = () => {
-            alert("Nice. Selection works. Next step: we will build the scan.");
-          };
+          renderSelected();
         }
       };
+
+      renderEmpty();
     </script>
   </body>
 </html>
