@@ -71,19 +71,19 @@
       }
 
       .content {
-        padding: 14px;
+        padding: 16px;
       }
 
       .card {
         background: var(--surface);
         border: 1px solid var(--line);
         border-radius: 8px;
-        padding: 12px;
+        padding: 14px;
       }
 
       .stack {
         display: grid;
-        gap: 10px;
+        gap: 12px;
       }
 
       .row {
@@ -99,7 +99,7 @@
       .eyebrow {
         color: var(--muted);
         font-size: 10px;
-        font-weight: 800;
+        font-weight: 400;
         letter-spacing: 0.06em;
         text-transform: uppercase;
       }
@@ -132,7 +132,7 @@
         cursor: pointer;
         font: inherit;
         font-size: 12px;
-        font-weight: 750;
+        font-weight: 400;
         min-height: 34px;
         padding: 0 10px;
       }
@@ -179,7 +179,7 @@
         min-height: 22px;
         padding: 0 7px;
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 400;
       }
 
       .chip {
@@ -194,44 +194,98 @@
       }
 
       .score {
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 800;
-        min-width: 44px;
-        padding: 5px 7px;
+        position: absolute;
+        top: 9px;
+        right: 9px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 400;
+        min-width: 36px;
+        padding: 3px 5px;
         text-align: center;
       }
 
-      .high {
+      .score.high {
         background: var(--green-soft);
         color: var(--green);
         border: 1px solid #a8edc4;
       }
 
-      .medium {
+      .score.medium {
         background: var(--amber-soft);
         color: var(--amber);
         border: 1px solid #ffd76a;
       }
 
-      .low {
+      .score.low {
         background: var(--gray-soft);
         color: var(--gray);
         border: 1px solid var(--line);
       }
 
       .match-row {
+        display: block;
         width: 100%;
         background: var(--surface);
         border: 1px solid var(--line);
         border-radius: 8px;
         padding: 9px;
         text-align: left;
+        position: relative;
+        cursor: pointer;
+        font: inherit;
       }
 
       .match-row:hover {
         border-color: #bcc9ff;
         background: #fbfcff;
+      }
+
+      .match-row.expanded {
+        border-color: var(--blue);
+        background: #fbfcff;
+      }
+
+      .match-actions {
+        display: none;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--line);
+      }
+
+      .match-row.expanded .match-actions {
+        display: grid;
+        gap: 8px;
+      }
+
+      .btn-flag {
+        background: #fdecec;
+        color: #c0392b;
+      }
+
+      .btn-flag:hover {
+        background: #fbd9d9;
+      }
+
+      .btn-review {
+        background: #e8f8ef;
+        color: #0f9f55;
+      }
+
+      .btn-review:hover {
+        background: #d5f3e3;
+      }
+
+      .action-hint {
+        font-size: 11px;
+        line-height: 1.4;
+        margin: 0 0 2px;
+      }
+
+      .filters {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
       }
 
       .match-copy {
@@ -254,8 +308,8 @@
 
       .summary {
         border-bottom: 1px solid var(--line);
-        margin: -14px -14px 12px;
-        padding: 14px;
+        margin: -16px -16px 12px;
+        padding: 16px;
         background: var(--surface);
       }
 
@@ -303,7 +357,7 @@
         gap: 6px;
         color: var(--muted);
         font-size: 12px;
-        font-weight: 650;
+        font-weight: 400;
       }
 
       .step {
@@ -317,6 +371,7 @@
       .dot {
         width: 16px;
         height: 16px;
+        flex-shrink: 0;
         border-radius: 999px;
         background: var(--blue-soft);
         color: var(--blue);
@@ -331,26 +386,61 @@
         bottom: 0;
         color: #a5adbf;
         font-size: 11px;
-        margin: 14px -14px -14px;
-        padding: 10px 14px;
+        margin: 16px -16px -16px;
+        padding: 10px 16px;
       }
 
-      .log-panel {
-        max-height: 118px;
-        overflow: auto;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #111827;
-        color: #dbeafe;
-        padding: 8px;
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-        font-size: 10px;
-        line-height: 1.45;
+      .loader {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        border: 2px solid var(--blue-soft);
+        border-top-color: var(--blue);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
       }
 
-      .log-line {
-        margin-bottom: 3px;
-        overflow-wrap: anywhere;
+      .progress-text {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .page-indicator {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .resize-edge {
+        position: fixed;
+        z-index: 1000;
+      }
+
+      .resize-right {
+        top: 0;
+        right: 0;
+        width: 8px;
+        height: 100%;
+        cursor: ew-resize;
+      }
+
+      .resize-bottom {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        cursor: ns-resize;
+      }
+
+      .resize-corner {
+        bottom: 0;
+        right: 0;
+        width: 16px;
+        height: 16px;
+        cursor: nwse-resize;
       }
     </style>
   </head>
@@ -358,67 +448,33 @@
   <body>
     <div class="header">
       <button class="back-button" id="backButton">←</button>
-      <div class="icon">⌕</div>
+      <div class="icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="12" height="12" rx="2.5" stroke="#ffffff" stroke-width="2"/>
+          <rect x="9" y="9" width="12" height="12" rx="2.5" stroke="#ffffff" stroke-width="2" fill="#3563e9"/>
+        </svg>
+      </div>
       <div>DesignTrace</div>
     </div>
 
     <div id="app" class="content"></div>
 
+    <div class="resize-edge resize-right" id="resizeRight"></div>
+    <div class="resize-edge resize-bottom" id="resizeBottom"></div>
+    <div class="resize-edge resize-corner" id="resizeCorner"></div>
+
     <script>
       const app = document.getElementById("app");
 
-      const sampleLayer = {
-        name: "Frame 929232",
-        pageName: "Checkout Flow",
-        type: "FRAME",
-        width: 520,
-        height: 380,
-        layers: 12
-      };
-
-      const matches = [
-        {
-          name: "Product Card - Hero",
-          page: "DEV Ready / Homepage",
-          score: 94,
-          reasons: ["Same component", "Similar text"]
-        },
-        {
-          name: "CTA Section / Primary",
-          page: "Checkout Flow",
-          score: 88,
-          reasons: ["Layer structure", "Similar text"]
-        },
-        {
-          name: "Modal - Confirm",
-          page: "QA States",
-          score: 82,
-          reasons: ["Same component"]
-        },
-        {
-          name: "Frame 929232 - Copy",
-          page: "Archive",
-          score: 77,
-          reasons: ["Similar structure"]
-        },
-        {
-          name: "Card Grid Item",
-          page: "DEV Ready / Cards",
-          score: 68,
-          reasons: ["Similar text"]
-        },
-        {
-          name: "Tooltip Trigger",
-          page: "Old Explorations",
-          score: 28,
-          reasons: ["Frame names"]
-        }
-      ];
-
+      let matches = [];
       let selectedLayer = null;
       let activeMatch = null;
       let currentScreen = "empty";
-      let logs = [];
+      let currentPage = 1;
+      const itemsPerPage = 10;
+      let currentFilter = "all";
+      let expandedMatchIndex = null;
+      let scanProgress = 0;
 
       function navigate(screenName, renderFunction) {
         currentScreen = screenName;
@@ -429,7 +485,7 @@
       function updateBackButton() {
         const backButton = document.getElementById("backButton");
         if (!backButton) return;
-        backButton.style.visibility = currentScreen === "empty" ? "hidden" : "visible";
+        backButton.style.display = currentScreen === "empty" ? "none" : "";
       }
 
       function goBack() {
@@ -443,20 +499,6 @@
           return;
         }
 
-        if (currentScreen === "detail") {
-          navigate("results", renderResults);
-          return;
-        }
-
-        if (
-          currentScreen === "taken-there" ||
-          currentScreen === "flagged" ||
-          currentScreen === "reviewed"
-        ) {
-          navigate("detail", renderMatchDetail);
-          return;
-        }
-
         navigate("empty", renderEmpty);
       }
 
@@ -464,23 +506,6 @@
         if (score >= 80) return "high";
         if (score >= 50) return "medium";
         return "low";
-      }
-
-      function addLog(message) {
-        logs.push(message);
-        if (logs.length > 40) logs = logs.slice(-40);
-        renderLogs();
-      }
-
-      function renderLogs() {
-        const logPanel = document.getElementById("scanLog");
-        if (!logPanel) return;
-        logPanel.innerHTML = logs.map((line) => `<div class="log-line">› ${line}</div>`).join("");
-        logPanel.scrollTop = logPanel.scrollHeight;
-      }
-
-      function logPanelHtml() {
-        return `<div class="log-panel" id="scanLog">${logs.map((line) => `<div class="log-line">› ${line}</div>`).join("")}</div>`;
       }
 
       function renderEmpty() {
@@ -493,7 +518,6 @@
                 <p>Select a layer to trace where it appears in this file.</p>
               </div>
               <button class="primary" id="checkSelection">Check selected layer</button>
-              <button class="ghost" id="useSample">Use sample selection</button>
               <div class="footer-note">Current Figma file only</div>
             </div>
           </div>
@@ -501,11 +525,6 @@
 
         document.getElementById("checkSelection").onclick = () => {
           parent.postMessage({ pluginMessage: { type: "check-selection" } }, "*");
-        };
-
-        document.getElementById("useSample").onclick = () => {
-          selectedLayer = sampleLayer;
-          navigate("selected", renderSelected);
         };
       }
 
@@ -551,7 +570,10 @@
         `;
 
         document.getElementById("scanFile").onclick = () => {
-            logs = ["Starting scan..."];
+            scanProgress = 0;
+            currentFilter = "all";
+            currentPage = 1;
+            expandedMatchIndex = null;
             navigate("scanning", renderScanning);
             parent.postMessage({ pluginMessage: { type: "scan-file" } }, "*");
         };
@@ -566,13 +588,21 @@
               <h1>Scanning all pages…</h1>
               <div class="step"><span class="dot">✓</span> Reading selected layer</div>
               <div class="step"><span class="dot">✓</span> Comparing structure</div>
-              <div class="step"><span class="dot">•</span> Ranking matches</div>
-              ${logPanelHtml()}
+              <div class="step"><div class="loader"></div> Ranking matches <span id="scanProgressText" class="progress-text"></span></div>
             </div>
             <button class="primary" disabled>Scanning…</button>
           </div>
         `;
 
+        // Set initial progress
+        updateScanProgress();
+      }
+
+      function updateScanProgress() {
+        const progressText = document.getElementById("scanProgressText");
+        if (progressText) {
+          progressText.textContent = scanProgress > 0 ? `(${scanProgress}%)` : '';
+        }
       }
 
       function renderResults() {
@@ -583,7 +613,7 @@
                 <div class="empty-icon">⌕</div>
                 <div class="stack">
                   <h1>No matches found</h1>
-                  <p>Try selecting a larger frame. We’ll tune the matching logic next.</p>
+                  <p>Try selecting a larger frame. We'll tune the matching logic next.</p>
                 </div>
                 <button class="primary" id="backToSelected">Back to selected layer</button>
               </div>
@@ -597,19 +627,37 @@
           return;
         }
 
+        const filteredMatches = matches.filter((match) => {
+          if (currentFilter === "high") return match.score >= 80;
+          if (currentFilter === "medium") return match.score >= 50 && match.score < 80;
+          if (currentFilter === "low") return match.score < 50;
+          return true;
+        });
+
+        const totalPages = Math.ceil(filteredMatches.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const currentPageMatches = filteredMatches.slice(startIndex, endIndex);
+
         app.innerHTML = `
           <div class="summary">
             <div class="row between">
               <div>
-                <h1>${matches.length} matches found</h1>
+                <h1>${filteredMatches.length} matches found</h1>
                 <p>${matches.filter((match) => match.score >= 80).length} high confidence, ${matches.filter((match) => match.score >= 50 && match.score < 80).length} medium, ${matches.filter((match) => match.score < 50).length} low</p>
               </div>
-              <button class="ghost" id="exportReport">Export</button>
+            </div>
+            <div class="filters">
+              <button class="chip ${currentFilter === 'all' ? 'tag' : ''}" id="filterAll">All</button>
+              <button class="chip ${currentFilter === 'high' ? 'tag' : ''}" id="filterHigh">High</button>
+              <button class="chip ${currentFilter === 'medium' ? 'tag' : ''}" id="filterMedium">Medium</button>
+              <button class="chip ${currentFilter === 'low' ? 'tag' : ''}" id="filterLow">Low</button>
             </div>
           </div>
           <div class="stack">
-            ${matches.map((match, index) => `
-              <button class="match-row" data-index="${index}">
+            ${currentPageMatches.map((match, index) => `
+              <div class="match-row ${expandedMatchIndex === startIndex + index ? 'expanded' : ''}" data-index="${startIndex + index}" role="button" tabindex="0">
+                <span class="score ${confidenceClass(match.score)}">${match.score}%</span>
                 <div class="row">
                   <div class="thumb"></div>
                   <div class="match-copy">
@@ -619,134 +667,123 @@
                       ${match.reasons.slice(0, 2).map((reason) => `<span class="tag">${reason}</span>`).join("")}
                     </div>
                   </div>
-                  <span class="score ${confidenceClass(match.score)}">${match.score}%</span>
                 </div>
-              </button>
+                <div class="match-actions">
+                  <p class="action-hint">Adds a text label next to this layer — search "Design Trace" in your file to find it later.</p>
+                  <button class="btn-flag" data-action="flag">🚩 Flag as outdated</button>
+                  <button class="btn-review" data-action="reviewed">✓ Mark reviewed</button>
+                </div>
+              </div>
             `).join("")}
           </div>
+          ${totalPages > 1 ? `
+            <div class="card">
+              <div class="row between">
+                <button class="ghost" id="prevPage" ${currentPage === 1 ? 'disabled' : ''}>← Previous</button>
+                <span class="page-indicator">Page ${currentPage} of ${totalPages}</span>
+                <button class="ghost" id="nextPage" ${currentPage === totalPages ? 'disabled' : ''}>Next →</button>
+              </div>
+            </div>
+          ` : ''}
         `;
 
         document.querySelectorAll(".match-row").forEach((row) => {
-          row.onclick = () => {
-            activeMatch = matches[Number(row.dataset.index)];
-            navigate("detail", renderMatchDetail);
+          row.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              row.click();
+            }
+          });
+
+          row.onclick = (e) => {
+            const action = e.target.closest("[data-action]")?.dataset.action;
+            const matchIndex = Number(row.dataset.index);
+            const match = filteredMatches[matchIndex];
+
+            if (action === "flag") {
+              activeMatch = match;
+              parent.postMessage({
+                pluginMessage: {
+                  type: "flag-match",
+                  match: activeMatch
+                }
+              }, "*");
+            } else if (action === "reviewed") {
+              activeMatch = match;
+              parent.postMessage({
+                pluginMessage: {
+                  type: "mark-reviewed",
+                  match: activeMatch
+                }
+              }, "*");
+            } else {
+              // Toggle expansion and navigate to component
+              if (expandedMatchIndex === matchIndex) {
+                expandedMatchIndex = null;
+              } else {
+                expandedMatchIndex = matchIndex;
+                activeMatch = match;
+                parent.postMessage({
+                  pluginMessage: {
+                    type: "take-me-there",
+                    match: activeMatch
+                  }
+                }, "*");
+              }
+              renderResults();
+            }
           };
         });
 
-        document.getElementById("exportReport").onclick = () => {
-          alert("Report export will be added later.");
+        document.getElementById("filterAll").onclick = () => {
+          currentFilter = "all";
+          currentPage = 1;
+          renderResults();
         };
-      }
 
-      function renderMatchDetail() {
-        app.innerHTML = `
-          <div class="stack">
-            <button class="secondary" id="backToResults">← Results</button>
+        document.getElementById("filterHigh").onclick = () => {
+          currentFilter = "high";
+          currentPage = 1;
+          renderResults();
+        };
 
-            <div class="card stack">
-              <div class="row between">
-                <div>
-                  <h1>${activeMatch.name}</h1>
-                  <p>${activeMatch.page}</p>
-                </div>
-                <span class="score ${confidenceClass(activeMatch.score)}">${activeMatch.score}%</span>
-              </div>
-            </div>
+        document.getElementById("filterMedium").onclick = () => {
+          currentFilter = "medium";
+          currentPage = 1;
+          renderResults();
+        };
 
-            <div class="card stack">
-              <div class="eyebrow">Source</div>
-              <div class="row">
-                <div class="thumb"></div>
-                <div>
-                  <h2>${selectedLayer.name}</h2>
-                  <p>${selectedLayer.pageName}</p>
-                </div>
-              </div>
-            </div>
+        document.getElementById("filterLow").onclick = () => {
+          currentFilter = "low";
+          currentPage = 1;
+          renderResults();
+        };
 
-            <div class="card stack">
-              <div class="eyebrow">Matched</div>
-              <div class="row">
-                <div class="thumb"></div>
-                <div>
-                  <h2>${activeMatch.name}</h2>
-                  <p>${activeMatch.page}</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="card stack">
-              <h2>Why this matched</h2>
-              ${activeMatch.reasons.map((reason) => `<div class="step"><span class="dot">✓</span>${reason}</div>`).join("")}
-              <p>Review this match if the source design changed.</p>
-            </div>
-
-            <button class="primary" id="takeMeThere">Take me there</button>
-            <button class="ghost" id="flag">Flag as outdated</button>
-            <button class="secondary" id="reviewed">Mark reviewed</button>
-          </div>
-        `;
-
-        document.getElementById("backToResults").onclick = () => navigate("results", renderResults);
-        document.getElementById("takeMeThere").onclick = () => {
-          parent.postMessage({
-            pluginMessage: {
-              type: "take-me-there",
-              match: activeMatch
+        if (totalPages > 1) {
+          document.getElementById("prevPage").onclick = () => {
+            if (currentPage > 1) {
+              currentPage--;
+              renderResults();
+              setTimeout(() => {
+                const summary = document.querySelector(".summary");
+                if (summary) summary.scrollIntoView({ behavior: "smooth" });
+              }, 0);
             }
-          }, "*");
-        };
-        document.getElementById("flag").onclick = () => {
-          parent.postMessage({
-            pluginMessage: {
-              type: "flag-match",
-              match: activeMatch
+          };
+
+          document.getElementById("nextPage").onclick = () => {
+            if (currentPage < totalPages) {
+              currentPage++;
+              renderResults();
+              setTimeout(() => {
+                const summary = document.querySelector(".summary");
+                if (summary) summary.scrollIntoView({ behavior: "smooth" });
+              }, 0);
             }
-          }, "*");
-        };
-        document.getElementById("reviewed").onclick = () => {
-          navigate("reviewed", renderReviewed);
-        };
+          };
+        }
       }
 
-      function renderTakenThere() {
-        app.innerHTML = `
-          <div class="empty">
-            <div class="empty-inner">
-              <div class="empty-icon">✓</div>
-              <div class="stack">
-                <h1>Frame selected</h1>
-                <p>${activeMatch.name} is now selected on the canvas.</p>
-              </div>
-              <button class="primary" id="back">Back to results</button>
-            </div>
-          </div>
-        `;
-        document.getElementById("back").onclick = () => navigate("results", renderResults);
-      }
-
-      function renderFlagged() {
-        app.innerHTML = `
-          <div class="empty">
-            <div class="empty-inner">
-              <div class="empty-icon">⚑</div>
-              <div class="stack">
-                <h1>Review flag added</h1>
-                <p>${activeMatch.name} was marked as outdated.</p>
-              </div>
-              <button class="primary" id="continue">Continue reviewing</button>
-              <button class="ghost" id="back">Back to results</button>
-            </div>
-          </div>
-        `;
-        document.getElementById("continue").onclick = () => navigate("results", renderResults);
-        document.getElementById("back").onclick = () => navigate("results", renderResults);
-      }
-
-      function renderReviewed() {
-        activeMatch.reviewed = true;
-        navigate("results", renderResults);
-      }
 
       window.onmessage = (event) => {
         const message = event.data.pluginMessage;
@@ -768,29 +805,90 @@
             navigate("scanning", renderScanning);
         }
 
-        if (message.type === "scan-log") {
-          addLog(message.message);
+        if (message.type === "scan-progress") {
+          scanProgress = message.progress;
+          if (currentScreen === "scanning") {
+            updateScanProgress();
+          }
         }
 
         if (message.type === "scan-results") {
             matches.length = 0;
             message.matches.forEach((match) => matches.push(match));
+            currentPage = 1;
+            currentFilter = "all";
+            expandedMatchIndex = null;
             navigate("results", renderResults);
         }
 
         if (message.type === "taken-there") {
-          activeMatch = message.match;
-          navigate("taken-there", renderTakenThere);
+          // Match is now selected in Figma, no screen change needed
         }
 
-        if (message.type === "flagged") {
-          activeMatch = message.match;
-          navigate("flagged", renderFlagged);
+        if (message.type === "flagged" || message.type === "reviewed") {
+          // Match state changed in Figma, collapse the expanded row
+          expandedMatchIndex = null;
+          if (currentScreen === "results") renderResults();
+        }
+
+        if (message.type === "flag-failed") {
+          alert(message.message || "Could not update that match.");
         }
       };
 
       document.getElementById("backButton").onclick = goBack;
       navigate("empty", renderEmpty);
+
+      // Resize functionality
+      const resizeRight = document.getElementById("resizeRight");
+      const resizeBottom = document.getElementById("resizeBottom");
+      const resizeCorner = document.getElementById("resizeCorner");
+
+      let isResizing = false;
+      let resizeDirection = null;
+      let startX, startY, startWidth, startHeight;
+
+      function startResize(e, direction) {
+        isResizing = true;
+        resizeDirection = direction;
+        startX = e.clientX;
+        startY = e.clientY;
+        startWidth = window.innerWidth;
+        startHeight = window.innerHeight;
+        e.preventDefault();
+      }
+
+      resizeRight.addEventListener("mousedown", (e) => startResize(e, "horizontal"));
+      resizeBottom.addEventListener("mousedown", (e) => startResize(e, "vertical"));
+      resizeCorner.addEventListener("mousedown", (e) => startResize(e, "both"));
+
+      document.addEventListener("mousemove", (e) => {
+        if (!isResizing) return;
+
+        let newWidth = startWidth;
+        let newHeight = startHeight;
+
+        if (resizeDirection === "horizontal" || resizeDirection === "both") {
+          newWidth = startWidth + (e.clientX - startX);
+        }
+
+        if (resizeDirection === "vertical" || resizeDirection === "both") {
+          newHeight = startHeight + (e.clientY - startY);
+        }
+
+        parent.postMessage({
+          pluginMessage: {
+            type: "resize",
+            width: Math.max(300, newWidth),
+            height: Math.max(200, newHeight)
+          }
+        }, "*");
+      });
+
+      document.addEventListener("mouseup", () => {
+        isResizing = false;
+        resizeDirection = null;
+      });
     </script>
   </body>
 </html>
